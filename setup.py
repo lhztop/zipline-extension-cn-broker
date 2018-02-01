@@ -7,17 +7,17 @@ try:
     from Cython.Build import cythonize
 except ImportError:
     def cythonize(extensions): return extensions
-    sources = ['src/trade/_citic.cpp']
+    sources = ['zipline_cn_extension/trade/_citic.cpp']
 else:
-    sources = ['src/trade/_citic.pyx']
+    sources = ['zipline_cn_extension/trade/_citic.pyx']
 
-sources.append('src/trade/jsoncpp.cpp')
-sources.append('src/trade/CiticTradeWrapper.cpp')
+sources.append('zipline_cn_extension/trade/jsoncpp.cpp')
+sources.append('zipline_cn_extension/trade/CiticTradeWrapper.cpp')
 
 import os.path
-base_trade_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "src", "trade")
+base_trade_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "zipline_cn_extension", "trade")
 print(base_trade_path)
-base_hq_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "src", "hq")
+base_hq_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "zipline_cn_extension", "hq")
 print(base_trade_path)
 print(__file__)
 
@@ -46,30 +46,38 @@ libraries = [
 # else:
 #     libraries.append('t2sdk')
 
-mod1 = Extension(
-    'src.trade._citic',
-    sources,
-    include_dirs = [base_trade_path, base_hq_path],
-    library_dirs = [base_trade_path, base_hq_path],
-    extra_compile_args = extra_compile_args,
-    extra_link_args = extra_link_args,
-    language='c++',
-    libraries=libraries
-)
+if "32" in platform.architecture()[0]:
+    mod1 = Extension(
+        'zipline_cn_extension.trade._citic',
+        sources,
+        include_dirs = [base_trade_path, base_hq_path],
+        library_dirs = [base_trade_path, base_hq_path],
+        extra_compile_args = extra_compile_args,
+        extra_link_args = extra_link_args,
+        language='c++',
+        libraries=libraries
+    )
+else:
+    mod1 = None
 
 setup(
-    name="zipline-extension-cn-broker",
-    version='0.1.0',
-    description="Python for Trader wrapper in china",
+    name="zipline-cn-extension",
+    version='0.1',
+    description="Python for zipline trader/broker wrapper in china",
     keywords='zipline broker china',
     author='Hongzhong Li',
-    author_email="Use the github issues",
+    author_email="lhztop@qq.com",
     url="https://github.com/lhztop/zipline-extension-cn-broker.git",
     license='MIT License',
     install_requires=['setuptools'],
-    package_dir={'zipline-extension-cn-broker': 'src'},
-    ext_modules=cythonize([mod1]),
+    package_dir={'zipline-extension-cn-broker': 'zipline_cn_extension'},
+    packages=find_packages(include=['zipline_cn_extension', 'zipline_cn_extension.*']),
+    ext_modules=cythonize([mod1]) if mod1 is not None else None,
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
+    package_data={root.replace(os.sep, '.'):
+                  ['*.pyi', '*.pyx', '*.pxi', '*.pxd','*.pyd']
+                  for root, dirnames, filenames in os.walk('zipline_cn_extension')
+                  if '__pycache__' not in root},
     include_package_data=True
 )
