@@ -39,7 +39,7 @@ except:
 log = Logger("TDX_citic_broker")
 
 
-class TdxCatseBroker(TdxShipaneBroker):
+class TdxCatsBroker(TdxShipaneBroker):
     """
     中信Cats系统CSV下单模块封装
     """
