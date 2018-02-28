@@ -24,9 +24,9 @@ class CatsTrade(object):
     封装CATS的csv扫单接口
     """
 
-    def __init__(self, account_type = "S0", account="000001", input_csv_dir="D:/CSVClientTrade/Input",
-                 asset_dbf="D:/CSVClientTrade/Output/assets.dbf",
-                 order_dbf="D:/CSVClientTrade/Output/order_updates.dbf", order_sync=True):
+    def __init__(self, account_type = "S0", account="000001", input_csv_dir="C:/CSVClientTrade/Input",
+                 asset_dbf="C:/CSVClientTrade/Output/asset.dbf",
+                 order_dbf="C:/CSVClientTrade/Output/order_updates.dbf", order_sync=True):
         self.account = account
         self.account_type = account_type
         self.input_csv_dir = input_csv_dir
