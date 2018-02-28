@@ -25,11 +25,7 @@ class CatsTrade(object):
     """
 
     def __init__(self, account_type = "S0", account="000001", input_csv_dir="C:/CSVClientTrade/Input",
-<<<<<<< HEAD
                  asset_dbf="C:/CSVClientTrade/Output/asset.dbf",
-=======
-                 asset_dbf="C:/CSVClientTrade/Output/assets.dbf",
->>>>>>> 830bc02f35f97300cf5798ef6ddbabb0f002bc60
                  order_dbf="C:/CSVClientTrade/Output/order_updates.dbf", order_sync=True):
         self.account = account
         self.account_type = account_type
